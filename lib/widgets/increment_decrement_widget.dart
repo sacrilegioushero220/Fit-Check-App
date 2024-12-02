@@ -28,12 +28,12 @@ class IncrementDecrementWidget extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: 5,
         right: 5,
-        top: 30,
-        bottom: 30,
+        top: 40,
+        bottom: 20,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Label
           Text(
