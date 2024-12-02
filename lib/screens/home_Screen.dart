@@ -24,8 +24,8 @@ class HomeScreen extends StatelessWidget {
         ),
         body: Padding(
           padding: const EdgeInsets.only(
-            left: 10.0,
-            right: 10.0,
+            left: 20.0,
+            right: 20.0,
           ),
           child: Center(
             child: Column(
@@ -33,20 +33,75 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    CardButton(
-                      icon: male,
-                      text: "MALE",
-                      dark: false,
-                    ),
-                    CardButton(
-                      icon: female,
-                      text: "FEMALE",
-                    ),
-                  ],
-                )
+                const Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: CardButton(
+                          icon: male,
+                          text: "MALE",
+                          dark: false,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: CardButton(
+                          icon: female,
+                          text: "FEMALE",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Expanded(
+                  child: HeightSelector(),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: IncrementDecrementWidget(
+                          label: 'Weight',
+                          unit: 'Kg',
+                          minValue: 0,
+                          maxValue: 120,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: IncrementDecrementWidget(
+                          label: 'Age',
+                          unit: 'Year',
+                          minValue: 0,
+                          maxValue: 120,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                RoundedRectangleButtton(
+                  onPressed: () {},
+                  text: "Calculate",
+                  icon: male,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
               ],
             ),
           ),
