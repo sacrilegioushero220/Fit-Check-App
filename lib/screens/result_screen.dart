@@ -1,4 +1,5 @@
 import 'package:fit_check_app/const/assets.dart';
+import 'package:fit_check_app/const/bmi_advice_strings.dart';
 import 'package:fit_check_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -25,17 +26,26 @@ class ResultScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
+      body: const Padding(
+        padding: EdgeInsets.only(
           left: 20.0,
           right: 20.0,
         ),
         child: Column(
           children: [
-            Container(
-              color: Colors.white,
-              height: 200,
+            BMIIndicator(
+              bmiValue: 18.7, // Example BMI value
+              category: "Underweight", // Example category
+              progress: 0.2,
+            )
+            // Example progress (0.0 to 1.0))
+
+            ,
+            SizedBox(
+              height: 20,
             ),
+            NutritionAdviceWidget(category: BMICategory.overweight),
+            SizedBox(height: 16.0),
           ],
         ),
       ),
