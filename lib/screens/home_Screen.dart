@@ -4,9 +4,16 @@ import 'package:fit_check_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isMaleSelected = true;
+  bool _isFemaleSelected = false;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                const Expanded(
+                Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -42,16 +49,29 @@ class HomeScreen extends StatelessWidget {
                         child: CardButton(
                           icon: male,
                           text: "MALE",
-                          dark: false,
+                          isSelected: _isMaleSelected,
+                          onTap: () {
+                            setState(() {
+                              _isFemaleSelected = false;
+                              _isMaleSelected = true;
+                            });
+                          },
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Expanded(
                         child: CardButton(
                           icon: female,
                           text: "FEMALE",
+                          isSelected: _isFemaleSelected,
+                          onTap: () {
+                            setState(() {
+                              _isFemaleSelected = true;
+                              _isMaleSelected = false;
+                            });
+                          },
                         ),
                       ),
                     ],

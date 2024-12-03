@@ -1,5 +1,4 @@
 import 'package:fit_check_app/const/assets.dart';
-import 'package:fit_check_app/screens/result_screen.dart';
 import 'package:fit_check_app/screens/screens.dart';
 import 'package:flutter/material.dart';
 

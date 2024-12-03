@@ -1,4 +1,3 @@
-import 'package:fit_check_app/const/assets.dart';
 import 'package:fit_check_app/const/bmi_advice_strings.dart';
 import 'package:fit_check_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';

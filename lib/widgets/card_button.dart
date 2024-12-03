@@ -6,13 +6,14 @@ import 'widgets.dart';
 class CardButton extends StatelessWidget {
   final String icon;
   final String text;
-  final bool dark;
+
+  bool isSelected;
   final void Function()? onTap;
-  const CardButton({
+  CardButton({
     super.key,
     required this.icon,
     required this.text,
-    this.dark = true,
+    this.isSelected = false,
     this.onTap,
   });
 
@@ -21,9 +22,9 @@ class CardButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: CardWidget(
-        color: dark
-            ? const Color.fromARGB(255, 40, 45, 35)
-            : const Color.fromARGB(255, 65, 80, 46),
+        color: isSelected
+            ? const Color.fromARGB(255, 65, 80, 46)
+            : const Color.fromARGB(255, 40, 45, 35),
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
