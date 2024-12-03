@@ -1,4 +1,5 @@
 import 'package:fit_check_app/const/assets.dart';
+import 'package:fit_check_app/screens/result_screen.dart';
 import 'package:fit_check_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -95,7 +96,12 @@ class HomeScreen extends StatelessWidget {
                   height: 15,
                 ),
                 RoundedRectangleButtton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ResultScreen()));
+                  },
                   text: "Calculate",
                   icon: male,
                 ),
