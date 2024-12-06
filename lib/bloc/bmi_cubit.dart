@@ -3,6 +3,6 @@ import 'package:meta/meta.dart';
 
 part 'bmi_cubit_state.dart';
 
-class BmiCubitCubit extends Cubit<BmiCubitState> {
-  BmiCubitCubit() : super(BmiCubitInitial());
+class BmiCubit extends Cubit<BmiCubitState> {
+  BmiCubit() : super(BmiCubitInitial());
 }

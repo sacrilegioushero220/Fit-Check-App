@@ -9,8 +9,12 @@ class HeightSelector extends StatefulWidget {
 }
 
 class _HeightSelectorState extends State<HeightSelector> {
-  double height = 150; // Default height in cm
+  double height = 150; // Default height
   String selectedUnit = 'Cm';
+
+  // Min and Max values for the slider
+  double minHeight = 50;
+  double maxHeight = 250;
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +34,10 @@ class _HeightSelectorState extends State<HeightSelector> {
               Text(
                 'Height',
                 style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold),
+                  color: Colors.white,
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +67,29 @@ class _HeightSelectorState extends State<HeightSelector> {
                         if (selected) {
                           setState(() {
                             selectedUnit = unit;
-                            // Optionally handle unit conversion
+
+                            // Update min, max, and height based on selected unit
+                            switch (unit) {
+                              case 'In':
+                                minHeight = 20; // Minimum in inches
+                                maxHeight = 100; // Maximum in inches
+                                height = height / 2.54; // Convert from cm to in
+                                break;
+                              case 'Ft':
+                                minHeight = 2; // Minimum in feet
+                                maxHeight = 8; // Maximum in feet
+                                height =
+                                    height / 30.48; // Convert from cm to ft
+                                break;
+                              case 'Cm':
+                              default:
+                                minHeight = 50; // Minimum in cm
+                                maxHeight = 250; // Maximum in cm
+                                height = height *
+                                    (selectedUnit == 'In'
+                                        ? 2.54
+                                        : 30.48); // Convert back to cm
+                            }
                           });
                         }
                       },
@@ -82,7 +109,12 @@ class _HeightSelectorState extends State<HeightSelector> {
             child: FittedBox(
               fit: BoxFit.scaleDown,
               child: Text(
-                height.toInt().toString(),
+                height.toStringAsFixed(1) +
+                    (selectedUnit == 'Cm'
+                        ? ' cm'
+                        : selectedUnit == 'In'
+                            ? ' in'
+                            : ' ft'),
                 style: GoogleFonts.inter(
                   color: Colors.white,
                   fontSize: 60.0,
@@ -96,9 +128,9 @@ class _HeightSelectorState extends State<HeightSelector> {
           // Slider
           Expanded(
             child: Slider(
-              value: height,
-              min: 50,
-              max: 250,
+              value: height.clamp(minHeight, maxHeight),
+              min: minHeight,
+              max: maxHeight,
               activeColor: const Color.fromARGB(255, 65, 80, 46),
               thumbColor: const Color.fromARGB(255, 218, 253, 135),
               inactiveColor: Colors.black,
@@ -110,8 +142,6 @@ class _HeightSelectorState extends State<HeightSelector> {
             ),
           ),
           const SizedBox(height: 16.0),
-
-          // Unit toggles
         ],
       ),
     );
