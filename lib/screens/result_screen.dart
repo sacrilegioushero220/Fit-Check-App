@@ -1,6 +1,8 @@
+import 'package:fit_check_app/bloc/bmi_cubit.dart';
 import 'package:fit_check_app/const/bmi_advice_strings.dart';
 import 'package:fit_check_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ResultScreen extends StatelessWidget {
@@ -23,7 +25,14 @@ class ResultScreen extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 29, 27, 31),
       appBar: AppBar(
         backgroundColor: const Color(0x001d1b1f),
-        leading: const BackButton(color: Colors.white),
+        leading: BackButton(
+          color: Colors.white,
+          onPressed: () {
+            BlocProvider.of<BmiCubit>(context).clearStorage();
+            BlocProvider.of<BmiCubit>(context).initializeValues();
+            Navigator.pop(context);
+          },
+        ),
         centerTitle: true,
         title: Text(
           "Result",

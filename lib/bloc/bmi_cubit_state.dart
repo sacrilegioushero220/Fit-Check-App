@@ -12,3 +12,5 @@ final class ErrorState extends BmiCubitState {}
 final class WeightSavedState extends BmiCubitState {}
 
 final class BmiCalculatedState extends BmiCubitState {}
+
+final class StorageCleared extends BmiCubitState {}
