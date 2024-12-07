@@ -1,11 +1,24 @@
+import 'package:fit_check_app/bloc/bmi_cubit.dart';
 import 'package:fit_check_app/const/assets.dart';
 import 'package:fit_check_app/screens/result_screen.dart';
 import 'package:fit_check_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isMaleSelected = true;
+  bool _isFemaleSelected = false;
+
+  int weight = 65; // Initial weight
+  int age = 25; // Initial age
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                const Expanded(
+                Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -42,16 +55,29 @@ class HomeScreen extends StatelessWidget {
                         child: CardButton(
                           icon: male,
                           text: "MALE",
-                          dark: false,
+                          isSelected: _isMaleSelected,
+                          onTap: () {
+                            setState(() {
+                              _isFemaleSelected = false;
+                              _isMaleSelected = true;
+                            });
+                          },
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Expanded(
                         child: CardButton(
                           icon: female,
                           text: "FEMALE",
+                          isSelected: _isFemaleSelected,
+                          onTap: () {
+                            setState(() {
+                              _isFemaleSelected = true;
+                              _isMaleSelected = false;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -66,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                const Expanded(
+                Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -76,9 +102,24 @@ class HomeScreen extends StatelessWidget {
                           unit: 'Kg',
                           minValue: 0,
                           maxValue: 120,
+                          value: weight,
+                          onIncrement: () {
+                            setState(() {
+                              weight++;
+                              BlocProvider.of<BmiCubit>(context)
+                                  .saveWeight(weight);
+                            });
+                          },
+                          onDecrement: () {
+                            setState(() {
+                              weight--;
+                              BlocProvider.of<BmiCubit>(context)
+                                  .saveWeight(weight);
+                            });
+                          },
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Expanded(
@@ -87,6 +128,19 @@ class HomeScreen extends StatelessWidget {
                           unit: 'Year',
                           minValue: 0,
                           maxValue: 120,
+                          value: age,
+                          onIncrement: () {
+                            setState(() {
+                              age++;
+                              // BlocProvider.of<BmiCubit>(context).saveAge(age);
+                            });
+                          },
+                          onDecrement: () {
+                            setState(() {
+                              age--;
+                              //BlocProvider.of<BmiCubit>(context).saveAge(age);
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -96,14 +150,20 @@ class HomeScreen extends StatelessWidget {
                   height: 15,
                 ),
                 RoundedRectangleButtton(
-                  onPressed: () {
+                  onPressed: () async {
+                    final bmi =
+                        await BlocProvider.of<BmiCubit>(context).calculateBMI();
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ResultScreen()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultScreen(
+                          bmiValue: bmi ?? 0.0,
+                        ),
+                      ),
+                    );
                   },
                   text: "Calculate",
-                  icon: male,
+                  icon: female,
                 ),
                 const SizedBox(
                   height: 20,

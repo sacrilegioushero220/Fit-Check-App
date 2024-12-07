@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class IncrementDecrementWidget extends StatelessWidget {
@@ -7,6 +6,9 @@ class IncrementDecrementWidget extends StatelessWidget {
   final String unit;
   final int minValue;
   final int maxValue;
+  final int value; // Current value
+  final VoidCallback onIncrement; // Callback for increment
+  final VoidCallback onDecrement; // Callback for decrement
 
   const IncrementDecrementWidget({
     super.key,
@@ -14,6 +16,9 @@ class IncrementDecrementWidget extends StatelessWidget {
     required this.unit,
     required this.minValue,
     required this.maxValue,
+    required this.value,
+    required this.onIncrement,
+    required this.onDecrement,
   });
 
   @override
@@ -53,9 +58,7 @@ class IncrementDecrementWidget extends StatelessWidget {
               // Decrement Button
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
-                    // context.read<WeightAgeCubit>().decrement(minValue);
-                  },
+                  onPressed: value > minValue ? onDecrement : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 218, 253, 135),
                     shape: const CircleBorder(),
@@ -73,7 +76,7 @@ class IncrementDecrementWidget extends StatelessWidget {
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  "65",
+                  value.toString(),
                   textAlign: TextAlign.justify,
                   style: GoogleFonts.inter(
                     color: Colors.white,
@@ -88,9 +91,7 @@ class IncrementDecrementWidget extends StatelessWidget {
               // Increment Button
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
-                    // context.read<WeightAgeCubit>().increment(maxValue);
-                  },
+                  onPressed: value < maxValue ? onIncrement : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 218, 253, 135),
                     shape: const CircleBorder(),
