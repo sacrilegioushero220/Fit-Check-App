@@ -28,8 +28,8 @@ class ResultScreen extends StatelessWidget {
         leading: BackButton(
           color: Colors.white,
           onPressed: () {
-            BlocProvider.of<BmiCubit>(context).clearStorage();
-            BlocProvider.of<BmiCubit>(context).initializeValues();
+            // BlocProvider.of<BmiCubit>(context).clearStorage();
+
             Navigator.pop(context);
           },
         ),
