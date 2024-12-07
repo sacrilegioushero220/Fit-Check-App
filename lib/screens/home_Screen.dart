@@ -1,7 +1,9 @@
+import 'package:fit_check_app/bloc/bmi_cubit.dart';
 import 'package:fit_check_app/const/assets.dart';
 import 'package:fit_check_app/screens/result_screen.dart';
 import 'package:fit_check_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +16,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool _isMaleSelected = true;
   bool _isFemaleSelected = false;
+
+  int weight = 65; // Initial weight
+  int age = 25; // Initial age
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -86,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 15,
                 ),
-                const Expanded(
+                Expanded(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -96,9 +102,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           unit: 'Kg',
                           minValue: 0,
                           maxValue: 120,
+                          value: weight,
+                          onIncrement: () {
+                            setState(() {
+                              weight++;
+                              BlocProvider.of<BmiCubit>(context)
+                                  .saveWeight(weight);
+                            });
+                          },
+                          onDecrement: () {
+                            setState(() {
+                              weight--;
+                              BlocProvider.of<BmiCubit>(context)
+                                  .saveWeight(weight);
+                            });
+                          },
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 20,
                       ),
                       Expanded(
@@ -107,6 +128,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           unit: 'Year',
                           minValue: 0,
                           maxValue: 120,
+                          value: age,
+                          onIncrement: () {
+                            setState(() {
+                              age++;
+                              // BlocProvider.of<BmiCubit>(context).saveAge(age);
+                            });
+                          },
+                          onDecrement: () {
+                            setState(() {
+                              age--;
+                              //BlocProvider.of<BmiCubit>(context).saveAge(age);
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -116,14 +150,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 15,
                 ),
                 RoundedRectangleButtton(
-                  onPressed: () {
+                  onPressed: () async {
+                    final bmi =
+                        await BlocProvider.of<BmiCubit>(context).calculateBMI();
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ResultScreen()));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultScreen(
+                          bmiValue: bmi ?? 0.0,
+                        ),
+                      ),
+                    );
                   },
                   text: "Calculate",
-                  icon: male,
+                  icon: female,
                 ),
                 const SizedBox(
                   height: 20,

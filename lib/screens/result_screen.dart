@@ -4,17 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ResultScreen extends StatelessWidget {
-  const ResultScreen({super.key});
+  final double bmiValue;
+
+  const ResultScreen({
+    super.key,
+    required this.bmiValue,
+  });
 
   @override
   Widget build(BuildContext context) {
+    // Determine BMI category based on the value
+    final BMICategory category = _getBMICategory(bmiValue);
+
+    // Calculate progress for the indicator (example scaling, adjust as needed)
+    final double progress = (bmiValue / 40).clamp(0.0, 1.0);
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 29, 27, 31),
       appBar: AppBar(
         backgroundColor: const Color(0x001d1b1f),
-        leading: const BackButton(
-          color: Colors.white, // Customize color if needed
-        ),
+        leading: const BackButton(color: Colors.white),
         centerTitle: true,
         title: Text(
           "Result",
@@ -25,29 +34,32 @@ class ResultScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: const Padding(
-        padding: EdgeInsets.only(
-          left: 20.0,
-          right: 20.0,
-        ),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
         child: Column(
           children: [
             BMIIndicator(
-              bmiValue: 18.7, // Example BMI value
-              category: "Underweight", // Example category
-              progress: 0.2,
-            )
-            // Example progress (0.0 to 1.0))
-
-            ,
-            SizedBox(
-              height: 20,
+              bmiValue: bmiValue,
+              category: BMIAdviceStrings.categoryTitles[category]!,
+              progress: progress,
             ),
-            NutritionAdviceWidget(category: BMICategory.overweight),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 20),
+            NutritionAdviceWidget(category: category),
+            const SizedBox(height: 16.0),
           ],
         ),
       ),
     );
+  }
+
+  // Method to determine BMI category based on the value
+  BMICategory _getBMICategory(double bmi) {
+    if (bmi < 18.5) {
+      return BMICategory.underweight;
+    } else if (bmi < 25.0) {
+      return BMICategory.normalWeight;
+    } else {
+      return BMICategory.overweight;
+    }
   }
 }

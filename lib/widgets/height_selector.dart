@@ -1,4 +1,6 @@
+import 'package:fit_check_app/bloc/bmi_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HeightSelector extends StatefulWidget {
@@ -9,7 +11,7 @@ class HeightSelector extends StatefulWidget {
 }
 
 class _HeightSelectorState extends State<HeightSelector> {
-  double height = 150; // Default height
+  double height = 150; // Default height in cm
   String selectedUnit = 'Cm';
 
   // Min and Max values for the slider
@@ -66,9 +68,10 @@ class _HeightSelectorState extends State<HeightSelector> {
                       onSelected: (bool selected) {
                         if (selected) {
                           setState(() {
+                            // Update the selected unit
                             selectedUnit = unit;
 
-                            // Update min, max, and height based on selected unit
+                            // Update min, max, and height based on the selected unit
                             switch (unit) {
                               case 'In':
                                 minHeight = 20; // Minimum in inches
@@ -85,11 +88,15 @@ class _HeightSelectorState extends State<HeightSelector> {
                               default:
                                 minHeight = 50; // Minimum in cm
                                 maxHeight = 250; // Maximum in cm
-                                height = height *
-                                    (selectedUnit == 'In'
-                                        ? 2.54
-                                        : 30.48); // Convert back to cm
+                                height = selectedUnit == 'In'
+                                    ? height * 2.54
+                                    : height * 30.48; // Convert back to cm
+                                break;
                             }
+                            height = double.parse(height.toStringAsFixed(1));
+                            // Save height in meters to SharedPreferences
+                            BlocProvider.of<BmiCubit>(context)
+                                .saveHeight(heightToMeters(height, unit));
                           });
                         }
                       },
@@ -103,7 +110,7 @@ class _HeightSelectorState extends State<HeightSelector> {
           ),
           const SizedBox(height: 8.0),
 
-          // Height value
+          // Height value display
           Expanded(
             flex: 7,
             child: FittedBox(
@@ -125,7 +132,7 @@ class _HeightSelectorState extends State<HeightSelector> {
           ),
           const SizedBox(height: 8.0),
 
-          // Slider
+          // Height slider
           Expanded(
             child: Slider(
               value: height.clamp(minHeight, maxHeight),
@@ -137,6 +144,9 @@ class _HeightSelectorState extends State<HeightSelector> {
               onChanged: (double value) {
                 setState(() {
                   height = value;
+                  height = double.parse(height.toStringAsFixed(1));
+                  BlocProvider.of<BmiCubit>(context)
+                      .saveHeight(heightToMeters(height, selectedUnit));
                 });
               },
             ),
@@ -145,5 +155,18 @@ class _HeightSelectorState extends State<HeightSelector> {
         ],
       ),
     );
+  }
+
+  /// Helper function to convert height to meters
+  double heightToMeters(double height, String unit) {
+    switch (unit) {
+      case 'In':
+        return (height * 2.54) / 100; // Convert inches to cm, then to meters
+      case 'Ft':
+        return (height * 30.48) / 100; // Convert feet to cm, then to meters
+      case 'Cm':
+      default:
+        return height / 100; // Convert cm to meters
+    }
   }
 }
