@@ -41,71 +41,71 @@ class _HeightSelectorState extends State<HeightSelector> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: ['In', 'Ft', 'Cm'].map((unit) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: ChoiceChip(
-                      showCheckmark: false,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50.0),
-                      ),
-                      label: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          unit,
-                          style: GoogleFonts.inter(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 11,
-                            color: selectedUnit == unit
-                                ? Colors.black
-                                : Colors.white,
-                          ),
-                        ),
-                      ),
-                      selected: selectedUnit == unit,
-                      onSelected: (bool selected) {
-                        if (selected) {
-                          setState(() {
-                            // Update the selected unit
-                            selectedUnit = unit;
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: ['In', 'Ft', 'Cm'].map((unit) {
+              //     return Padding(
+              //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //       child: ChoiceChip(
+              //         showCheckmark: false,
+              //         shape: RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(50.0),
+              //         ),
+              //         label: FittedBox(
+              //           fit: BoxFit.scaleDown,
+              //           child: Text(
+              //             unit,
+              //             style: GoogleFonts.inter(
+              //               fontWeight: FontWeight.bold,
+              //               fontSize: 11,
+              //               color: selectedUnit == unit
+              //                   ? Colors.black
+              //                   : Colors.white,
+              //             ),
+              //           ),
+              //         ),
+              //         selected: selectedUnit == unit,
+              //         onSelected: (bool selected) {
+              //           if (selected) {
+              //             setState(() {
+              //               // Update the selected unit
+              //               selectedUnit = unit;
 
-                            // Update min, max, and height based on the selected unit
-                            switch (unit) {
-                              case 'In':
-                                minHeight = 20; // Minimum in inches
-                                maxHeight = 100; // Maximum in inches
-                                height = height / 2.54; // Convert from cm to in
-                                break;
-                              case 'Ft':
-                                minHeight = 2; // Minimum in feet
-                                maxHeight = 8; // Maximum in feet
-                                height =
-                                    height / 30.48; // Convert from cm to ft
-                                break;
-                              case 'Cm':
-                              default:
-                                minHeight = 50; // Minimum in cm
-                                maxHeight = 250; // Maximum in cm
-                                height = selectedUnit == 'In'
-                                    ? height * 2.54
-                                    : height * 30.48; // Convert back to cm
-                                break;
-                            }
-                            height = double.parse(height.toStringAsFixed(1));
-                            // Save height in meters to SharedPreferences
-                            BlocProvider.of<BmiCubit>(context)
-                                .saveHeight(heightToMeters(height, unit));
-                          });
-                        }
-                      },
-                      selectedColor: const Color.fromARGB(255, 218, 253, 135),
-                      backgroundColor: const Color.fromARGB(255, 56, 56, 56),
-                    ),
-                  );
-                }).toList(),
-              ),
+              //               // Update min, max, and height based on the selected unit
+              //               switch (unit) {
+              //                 case 'In':
+              //                   minHeight = 20; // Minimum in inches
+              //                   maxHeight = 100; // Maximum in inches
+              //                   height = height / 2.54; // Convert from cm to in
+              //                   break;
+              //                 case 'Ft':
+              //                   minHeight = 2; // Minimum in feet
+              //                   maxHeight = 8; // Maximum in feet
+              //                   height =
+              //                       height / 30.48; // Convert from cm to ft
+              //                   break;
+              //                 case 'Cm':
+              //                 default:
+              //                   minHeight = 50; // Minimum in cm
+              //                   maxHeight = 250; // Maximum in cm
+              //                   height = selectedUnit == 'In'
+              //                       ? height * 2.54
+              //                       : height * 30.48; // Convert back to cm
+              //                   break;
+              //               }
+              //               height = double.parse(height.toStringAsFixed(1));
+              //               // Save height in meters to SharedPreferences
+              //               BlocProvider.of<BmiCubit>(context)
+              //                   .saveHeight(heightToMeters(height, unit));
+              //             });
+              //           }
+              //         },
+              //         selectedColor: const Color.fromARGB(255, 218, 253, 135),
+              //         backgroundColor: const Color.fromARGB(255, 56, 56, 56),
+              //       ),
+              //     );
+              //   }).toList(),
+              // ),
             ],
           ),
           const SizedBox(height: 8.0),

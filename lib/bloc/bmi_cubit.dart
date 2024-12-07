@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +6,12 @@ part 'bmi_cubit_state.dart';
 
 class BmiCubit extends Cubit<BmiCubitState> {
   BmiCubit() : super(BmiCubitInitial());
+
+  Future<void> initializeValues() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setDouble("height", 1.5);
+    prefs.setInt("weight", 65);
+  }
 
   Future<void> saveHeight(double heightInMeters) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,5 +55,11 @@ class BmiCubit extends Cubit<BmiCubitState> {
       print("Error: Missing weight or height for BMI calculation.");
     }
     return null;
+  }
+
+  Future<void> clearStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    emit(StorageCleared());
   }
 }
