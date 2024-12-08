@@ -1,8 +1,6 @@
-import 'package:fit_check_app/bloc/bmi_cubit.dart';
 import 'package:fit_check_app/const/bmi_advice_strings.dart';
 import 'package:fit_check_app/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ResultScreen extends StatelessWidget {
